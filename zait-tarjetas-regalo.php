@@ -1,19 +1,18 @@
 <?php
 /**
  * Plugin Name: Zait - Banner Informativo de Citas
- * Version: 1.3.0
- * Description: Componente CI/CD 3: Inyecta un aviso de prueba global en la cabecera del documento web.
+ * Version: 1.4.0
+ * Description: Componente CI/CD 3: Inyecta un texto de auditoría de tesis en el footer global de WordPress.
  * Author: Tu Nombre
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-// Forzamos la inyección al principio de la carga de la página
-add_action( 'wp_head', 'zait_alerta_global_tesis' );
-function zait_alerta_global_tesis() {
+add_action( 'wp_footer', 'zait_texto_auditoria_footer' );
+function zait_texto_auditoria_footer() {
     ?>
-    <script type="text/javascript">
-        alert("¡Pipeline CI/CD Exitoso! El plugin de Tarjetas de Regalo se ha desplegado correctamente.");
-    </script>
+    <div id="test-tesis-cd" style="background-color: #ffcc00; color: #000000; text-align: center; padding: 15px; font-weight: bold; font-size: 18px; width: 100%; position: relative; z-index: 99999; font-family: sans-serif;">
+        ⚠️ DEMOSTRACIÓN TESIS: Despliegue Continuo (CD) Exitoso con GitHub Actions.
+    </div>
     <?php
 }
