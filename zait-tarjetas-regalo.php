@@ -1,27 +1,34 @@
 <?php
 /**
  * Plugin Name: Zait - Banner Informativo de Citas
- * Version: 1.1.0
- * Description: Componente CI/CD 3: Muestra una barra fija global en la parte superior para promover el agendamiento directo de citas.
+ * Version: 1.2.0
+ * Description: Componente CI/CD 3: Inyecta dinámicamente un aviso informativo sobre tarjetas de regalo dentro del agendamiento.
  * Author: Tu Nombre
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-// Cambiamos el hook a wp_footer para asegurar compatibilidad total con Elementor y Amelia
-add_action( 'wp_footer', 'zait_banner_informativo_spa_fijo' );
-function zait_banner_informativo_spa_fijo() {
-    // Solo mostrar a los visitantes en la parte pública de la web
-    if ( ! is_admin() ) {
-        ?>
-        <div style="background-color: #00a0d2; color: #ffffff; text-align: center; padding: 12px 20px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; position: fixed; top: 0; left: 0; width: 100%; z-index: 999999; box-shadow: 0 4px 10px rgba(0,0,0,0.15); box-sizing: border-box;">
-            📅 ¡Reserva tu sesión de Fisioterapia o Spa hoy mismo! Utiliza nuestro sistema de citas en línea haciendo clic en Reservar Cita.
-        </div>
-        <!-- Ajuste estético para que la barra fija no tape la cabecera original -->
-        <style>
-            body { margin-top: 45px !important; }
-            @media (max-width: 782px) { body { margin-top: 45px !important; } }
-        </style>
-        <?php
-    }
+add_action( 'wp_footer', 'zait_inyectar_aviso_amelia' );
+function zait_inyectar_aviso_amelia() {
+    ?>
+    <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ejecutar un bucle para esperar a que Amelia termine de cargar el formulario en pantalla
+        var comprobarAmelia = setInterval(function() {
+            var formulario = document.querySelector('.am-select-service');
+            if (formulario) {
+                clearInterval(comprobarAmelia);
+                
+                // Crear el contenedor del banner de regalo
+                var avisoHtml = document.createElement('div');
+                avisoHtml.innerHTML = '🎁 <strong>Nota del Spa:</strong> ¿Tienes una Tarjeta de Regalo Digital? Infórmalo al asistente antes de iniciar tu sesión para aplicar tu saldo.';
+                avisoHtml.style.cssText = "background-color: #e6f7ff; color: #0050b3; border: 1px solid #91d5ff; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-family: sans-serif; font-size: 14px; text-align: center;";
+                
+                // Insertar el aviso en la parte superior del cuadro blanco de Amelia
+                formulario.insertBefore(avisoHtml, formulario.firstChild);
+            }
+        }, 500); // Comprueba cada medio segundo
+    });
+    </script>
+    <?php
 }
