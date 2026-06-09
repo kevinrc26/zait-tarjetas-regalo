@@ -1,34 +1,19 @@
 <?php
 /**
  * Plugin Name: Zait - Banner Informativo de Citas
- * Version: 1.2.0
- * Description: Componente CI/CD 3: Inyecta dinámicamente un aviso informativo sobre tarjetas de regalo dentro del agendamiento.
+ * Version: 1.3.0
+ * Description: Componente CI/CD 3: Inyecta un aviso de prueba global en la cabecera del documento web.
  * Author: Tu Nombre
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-add_action( 'wp_footer', 'zait_inyectar_aviso_amelia' );
-function zait_inyectar_aviso_amelia() {
+// Forzamos la inyección al principio de la carga de la página
+add_action( 'wp_head', 'zait_alerta_global_tesis' );
+function zait_alerta_global_tesis() {
     ?>
     <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        // Ejecutar un bucle para esperar a que Amelia termine de cargar el formulario en pantalla
-        var comprobarAmelia = setInterval(function() {
-            var formulario = document.querySelector('.am-select-service');
-            if (formulario) {
-                clearInterval(comprobarAmelia);
-                
-                // Crear el contenedor del banner de regalo
-                var avisoHtml = document.createElement('div');
-                avisoHtml.innerHTML = '🎁 <strong>Nota del Spa:</strong> ¿Tienes una Tarjeta de Regalo Digital? Infórmalo al asistente antes de iniciar tu sesión para aplicar tu saldo.';
-                avisoHtml.style.cssText = "background-color: #e6f7ff; color: #0050b3; border: 1px solid #91d5ff; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-family: sans-serif; font-size: 14px; text-align: center;";
-                
-                // Insertar el aviso en la parte superior del cuadro blanco de Amelia
-                formulario.insertBefore(avisoHtml, formulario.firstChild);
-            }
-        }, 500); // Comprueba cada medio segundo
-    });
+        alert("¡Pipeline CI/CD Exitoso! El plugin de Tarjetas de Regalo se ha desplegado correctamente.");
     </script>
     <?php
 }
